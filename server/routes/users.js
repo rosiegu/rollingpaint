@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var MongoClient = require('mongodb').MongoClient
-  , assert = require('assert');
+var router = require('express').Router();
+var mongoose = require('mongoose');
+var passport = require('passport')
+    , LocalStrategy = require('passport-local').Strategy;
+
 // Connection URL
-var url = 'mongodb://localhost:27017/rollingpaint';
+mongoose.connect('mongodb://localhost:27017/rollingpaint');
+// var url = 'mongodb://localhost:27017/rollingpaint';
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -78,6 +80,24 @@ router.delete('/:name', function(req, res, next) {
       console.log("deleted " + req.params.name);
       db.close();
     });
+  });
+
+  res.send('Save ' + req.params.name);
+});
+
+router.post('/login', function(req, res, next) {
+  // Use connect method to connect to the Server
+  MongoClient.connect(url, function(err, db) {
+    console.log("Connected correctly to server");
+
+    // Insert some documents
+    db.collection('user').insert([
+      {name : req.params.name}
+    ], function(err, result) {
+
+    });
+
+    db.close();
   });
 
   res.send('Save ' + req.params.name);
