@@ -4,35 +4,17 @@ var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
 // Connection URL
-mongoose.connect('mongodb://localhost:27017/rollingpaint');
+//mongoose.connect('mongodb://localhost:27017/rollingpaint');
 // var url = 'mongodb://localhost:27017/rollingpaint';
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  // Use connect method to connect to the Server
-  MongoClient.connect(url, function(err, db) {
-    console.log("Connected correctly to server");
 
-    // Find some documents
-    db.collection('user').find({}).toArray(function(err, doc) {
-      console.log("Found the following records");
-      console.dir(doc);
-      res.send(doc);
-      db.close();
-    });
+  User.find({}, function(err, docs) {
+    console.log("Found the following records");
+    console.dir(docs);
+    res.send(docs);
   });
-});
-
-router.get('/test', function(req, res, next) {
-  // Use connect method to connect to the Server
-  MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
-    console.log("Connected correctly to server");
-
-    db.close();
-  });
-
-  res.send('hello');
 });
 
 router.get('/:name', function(req, res, next) {
